@@ -10,7 +10,8 @@ public class PlayerJump : MonoBehaviour
      public GameObject Player;
      public Animator anim;
     private bool isColliding=false;
-    public float lx,ly,lz;
+    public AudioSource audioSource;
+    public AudioClip audioClip;
 
     private Rigidbody rb;
     private Vector2 dragStartPosition;
@@ -25,6 +26,8 @@ public class PlayerJump : MonoBehaviour
 
     void Update()
     {
+        AddDragSound();
+
         //linerenderer set position 
         
         // Vector3 newPosition = lineRenderer.transform.position;
@@ -36,6 +39,7 @@ public class PlayerJump : MonoBehaviour
         }
         else{
             anim.SetBool("jump",false);
+            
         }
         //Jump Animation Ended
         if (Input.touchCount > 0)
@@ -94,6 +98,7 @@ public class PlayerJump : MonoBehaviour
                     }
                     break;
             }
+            
         }
     }
 
@@ -111,11 +116,23 @@ public class PlayerJump : MonoBehaviour
     }
      private void OnCollisionEnter(Collision other) {
         isColliding=true;
+       
      }
      private void OnCollisionExit(Collision other){
         isColliding=false;
      }
      public void OnCollisionStay(Collision other){
         isColliding=true;
+     }
+
+     private void AddDragSound(){
+        if (isDragging){
+            if (audioSource !=null && audioClip!=null){
+                audioSource.clip=audioClip;
+                audioSource.Play();
+                
+            }
+        
+        }
      }
 }
